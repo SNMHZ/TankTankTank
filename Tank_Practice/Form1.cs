@@ -16,12 +16,15 @@ namespace Tank_Practice
     public partial class Form1 : Form
     {
         ProgressBar gauge_p1;
+        ProgressBar hp_p1;
         bool bRunning;
         Tank tank_p1;
         Thread tank_Thread_p1;
         Thread charge_Gauge_Thread_p1;
         RectangleF map_Rect;
+        RectangleF ground_Rect;
         Point gauge_p1_Pos;
+        Point hp_p1_Pos;
         int power;
         public Form1()
         {
@@ -29,7 +32,7 @@ namespace Tank_Practice
             map_Rect = this.ClientRectangle;
             resetGame();
             bRunning = true;
-            tank_Thread_p1 = new Thread(() => operateTank(tank_p1, gauge_p1, gauge_p1_Pos));
+            tank_Thread_p1 = new Thread(() => operateTank(tank_p1, hp_p1, hp_p1_Pos));
             // tank_Thread_p1.IsBackground = true;
             tank_Thread_p1.Start();
             draw();
@@ -54,18 +57,32 @@ namespace Tank_Practice
         {
             Size body = new Size(100, 20);
             Size turret = new Size(40, 20);
+            int ground_Height = 100;
+            ground_Rect = new RectangleF(new Point(0, (int)map_Rect.Height - ground_Height),
+                new Size((int)map_Rect.Width, ground_Height));
             int x = body.Width / 2;
-            int y = (int)map_Rect.Height - (body.Height + turret.Height / 2 + 1);
+            int y = (int)map_Rect.Height - (ground_Height + body.Height + turret.Height / 2 + 1);
             tank_p1 = new Tank(new Point(x, y), new Rectangle(new Point(x - body.Width / 2, y + turret.Height / 2), body),
-                new Rectangle(new Point(x - turret.Width / 2, y - turret.Height / 2), turret), Rectangle.Round(map_Rect));
+                new Rectangle(new Point(x - turret.Width / 2, y - turret.Height / 2), turret),
+                new Rectangle(new Point(0, 0), new Size((int)map_Rect.Width, (int)map_Rect.Height - ground_Height)));
             gauge_p1 = new ProgressBar();
             gauge_p1.Step = 1;
-            gauge_p1.Size = body;
+            gauge_p1.Size = new Size(300, 20);
             gauge_p1.Style = ProgressBarStyle.Continuous;
-            gauge_p1_Pos = new Point(x - body.Width / 2, y - (turret.Height + tank_p1.cannon_Len));
+            gauge_p1_Pos = new Point(50, this.ClientRectangle.Height - 80);
             gauge_p1.Location = gauge_p1_Pos;
             gauge_p1.Visible = true;
             this.Controls.Add(gauge_p1);
+            hp_p1 = new ProgressBar();
+            hp_p1.Size = body;
+            hp_p1.Style = ProgressBarStyle.Continuous;
+            hp_p1_Pos = new Point(x - body.Width / 2, y - (turret.Height + tank_p1.cannon_Len));
+            hp_p1.Location = hp_p1_Pos;
+            hp_p1.ForeColor = Color.Blue;
+            hp_p1.Maximum = 2000;
+            hp_p1.Value = 2000;
+            hp_p1.Visible = true;
+            this.Controls.Add(hp_p1);
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -85,6 +102,7 @@ namespace Tank_Practice
             {
                 bg.Graphics.Clear(BackColor);
                 bg.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                bg.Graphics.FillRectangle(Brushes.Black, ground_Rect);
                 bg.Graphics.DrawRectangle(Pens.Black, tank_p1.body_Rect);
                 bg.Graphics.DrawRectangle(Pens.Black, tank_p1.turret_Rect);
                 Point cannon_Start = tank_p1.center;
@@ -92,11 +110,15 @@ namespace Tank_Practice
                 Pen pen = new Pen(Color.Black, 5);
                 bg.Graphics.DrawLine(pen, cannon_Start, cannon_End);
                 int bullet_Size = 5;
+                int hit_Area_Size = 10;
                 double x, y;
                 for (int i = tank_p1.bullets.Count - 1; i >= 0; --i)
                 {
                     if (tank_p1.bullets[i].hit)
                     {
+                        x = tank_p1.bullets[i].current_Pos.X - hit_Area_Size;
+                        y = tank_p1.bullets[i].current_Pos.Y - hit_Area_Size;
+                        bg.Graphics.FillRectangle(Brushes.Red, (float)x, (float)y, hit_Area_Size * 2, hit_Area_Size * 2);
                         tank_p1.bullets.RemoveAt(i);
                     }
                     else
@@ -169,7 +191,7 @@ namespace Tank_Practice
             bool bDraw;
             while (bRunning)
             {
-                speed = 1;
+                speed = 5;
                 Point tank_Body_Pos = tank_Obj.body_Rect.Location;
                 Point tank_Turret_Pos = tank_Obj.turret_Rect.Location;
                 if (tank_Obj.L)
@@ -232,7 +254,7 @@ namespace Tank_Practice
                 {
                     draw();
                 }
-                Thread.Sleep(1);
+                Thread.Sleep(20);
             }
         }
 
