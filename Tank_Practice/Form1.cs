@@ -26,12 +26,14 @@ namespace Tank_Practice
         Point gauge_p1_Pos;
         Point hp_p1_Pos;
         int power;
+        Image myImage;
         public Form1()
         {
             InitializeComponent();
             map_Rect = this.ClientRectangle;
             resetGame();
             bRunning = true;
+            myImage = Image.FromFile(@"..\\..\\map3.png");
             tank_Thread_p1 = new Thread(() => operateTank(tank_p1, hp_p1, hp_p1_Pos));
             // tank_Thread_p1.IsBackground = true;
             tank_Thread_p1.Start();
@@ -101,11 +103,13 @@ namespace Tank_Practice
             System.Drawing.Graphics g = this.CreateGraphics();
             using (BufferedGraphics bg = BufferedGraphicsManager.Current.Allocate(g, this.ClientRectangle))
             {
+                
                 bg.Graphics.Clear(BackColor);
                 bg.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                bg.Graphics.FillRectangle(Brushes.Black, ground_Rect);
-                bg.Graphics.DrawRectangle(Pens.Black, tank_p1.body_Rect);
-                bg.Graphics.DrawRectangle(Pens.Black, tank_p1.turret_Rect);
+                bg.Graphics.DrawImage(myImage, 0, 0);
+                bg.Graphics.FillRectangle(Brushes.Gray, ground_Rect);
+                bg.Graphics.FillRectangle(Brushes.Black, tank_p1.body_Rect);
+                bg.Graphics.FillRectangle(Brushes.Black, tank_p1.turret_Rect);
                 Point cannon_Start = tank_p1.center;
                 PointF cannon_End = tank_p1.getRotatedPos(tank_p1.deg, tank_p1.cannon_Len, cannon_Start);
                 Pen pen = new Pen(Color.Black, 5);
