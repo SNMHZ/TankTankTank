@@ -28,3 +28,4 @@ C:\Users\SNMHZ\Source\Repos\SNMHZ\TankTankTank\Tank_Practice\obj\Debug\Tank_Prac
 C:\Users\SNMHZ\Source\Repos\SNMHZ\TankTankTank\Tank_Practice\obj\Debug\Tank_Practice.csproj.CoreCompileInputs.cache
 C:\Users\SNMHZ\Source\Repos\SNMHZ\TankTankTank\Tank_Practice\obj\Debug\Tank_Practice.exe
 C:\Users\SNMHZ\Source\Repos\SNMHZ\TankTankTank\Tank_Practice\obj\Debug\Tank_Practice.pdb
+C:\Users\SNMHZ\Source\Repos\SNMHZ\TankTankTank\Tank_Practice\obj\Debug\Tank_Practice.ConnectorForm.resources
