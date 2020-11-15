@@ -51,6 +51,7 @@ namespace Tank_Practice
             this.SetStyle(ControlStyles.UserPaint, true);
             this.UpdateStyles();
             */
+            this.KeyPreview = true;
         }
 
         private void resetGame()
@@ -269,6 +270,18 @@ namespace Tank_Practice
             gauge_p1.Value = 0;
             gauge_p1.Update();
             gauge_p1.Refresh();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //return;
+            MessageBox.Show("ffff");
+        }
+
+        private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("connect menu");
+            ResignToolStripMenuItem.Enabled = true;
         }
     }
 }

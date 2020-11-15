@@ -28,14 +28,55 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.네트워크ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ConnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ResignToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.네트워크ToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(902, 24);
+            this.menuStrip1.TabIndex = 2;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // 네트워크ToolStripMenuItem
+            // 
+            this.네트워크ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ConnectToolStripMenuItem,
+            this.ResignToolStripMenuItem});
+            this.네트워크ToolStripMenuItem.Name = "네트워크ToolStripMenuItem";
+            this.네트워크ToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.네트워크ToolStripMenuItem.Text = "네트워크";
+            // 
+            // ConnectToolStripMenuItem
+            // 
+            this.ConnectToolStripMenuItem.Name = "ConnectToolStripMenuItem";
+            this.ConnectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ConnectToolStripMenuItem.Text = "연결";
+            this.ConnectToolStripMenuItem.Click += new System.EventHandler(this.ConnectToolStripMenuItem_Click);
+            // 
+            // ResignToolStripMenuItem
+            // 
+            this.ResignToolStripMenuItem.Enabled = false;
+            this.ResignToolStripMenuItem.Name = "ResignToolStripMenuItem";
+            this.ResignToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ResignToolStripMenuItem.Text = "항복";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1288, 729);
+            this.ClientSize = new System.Drawing.Size(902, 486);
+            this.Controls.Add(this.menuStrip1);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -43,11 +84,18 @@
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 네트워크ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ConnectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ResignToolStripMenuItem;
     }
 }
 
