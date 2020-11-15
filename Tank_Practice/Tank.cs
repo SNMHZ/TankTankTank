@@ -58,7 +58,7 @@ namespace Tank_Practice
     {
         public Point center;
         public Rectangle body_Rect;
-        public Rectangle turret_Rect;
+        public Rectangle gun_Rect;
         public Rectangle map_Rect;
         public int cannon_Len;
         public double deg;
@@ -67,13 +67,13 @@ namespace Tank_Practice
         public bool charge_Cannon;
         public List<Bullet> bullets;
 
-        public Tank(Point center, Rectangle body_Rect, Rectangle turret_Rect, Rectangle map_Rect)
+        public Tank(Point center, Rectangle body_Rect, Rectangle gun_Rect, Rectangle map_Rect)
         {
             this.center = center;
             this.body_Rect = body_Rect;
-            this.turret_Rect = turret_Rect;
+            this.gun_Rect = gun_Rect;
             this.map_Rect = map_Rect;
-            this.cannon_Len = (int)this.body_Rect.Width / 2;
+            this.cannon_Len = (int)this.gun_Rect.Width;
             this.deg = 45;
             this.power = 0;
             this.L = false;

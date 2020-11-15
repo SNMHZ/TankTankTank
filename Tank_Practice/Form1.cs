@@ -22,8 +22,8 @@ namespace Tank_Practice
         Tank tank_p1;
         Thread tank_Thread_p1;
         Thread charge_Gauge_Thread_p1;
-        RectangleF map_Rect;
-        RectangleF ground_Rect;
+        Rectangle map_Rect;
+        Rectangle ground_Rect;
         Point gauge_p1_Pos;
         Point hp_p1_Pos;
         int power;
@@ -61,6 +61,17 @@ namespace Tank_Practice
 
         private void resetGame()
         {
+            Size body = new Size(60, 40);
+            Size gun = new Size(40, 7);
+            int ground_Height = 100;
+            ground_Rect = new Rectangle(new Point(0, map_Rect.Height - ground_Height),
+                new Size(map_Rect.Width, ground_Height));
+            int x = body.Width / 2;
+            int y = map_Rect.Height - (ground_Height + body.Height / 2 + body.Height / 4);
+            tank_p1 = new Tank(new Point(x, y), new Rectangle(new Point(x - body.Width / 2, y - body.Height / 4), body),
+                new Rectangle(new Point(x, y - gun.Height / 2), gun),
+                new Rectangle(new Point(0, 0), new Size(map_Rect.Width, map_Rect.Height - ground_Height)));
+            /*
             Size body = new Size(100, 20);
             Size turret = new Size(40, 20);
             int ground_Height = 100;
@@ -71,6 +82,7 @@ namespace Tank_Practice
             tank_p1 = new Tank(new Point(x, y), new Rectangle(new Point(x - body.Width / 2, y + turret.Height / 2), body),
                 new Rectangle(new Point(x - turret.Width / 2, y - turret.Height / 2), turret),
                 new Rectangle(new Point(0, 0), new Size((int)map_Rect.Width, (int)map_Rect.Height - ground_Height)));
+            */
             gauge_p1 = new ProgressBar();
             gauge_p1.Step = 1;
             gauge_p1.Size = new Size(300, 20);
@@ -80,9 +92,9 @@ namespace Tank_Practice
             gauge_p1.Visible = true;
             this.Controls.Add(gauge_p1);
             hp_p1 = new ProgressBar();
-            hp_p1.Size = body;
+            hp_p1.Size = new Size(60, 10);
             hp_p1.Style = ProgressBarStyle.Continuous;
-            hp_p1_Pos = new Point(x - body.Width / 2, y - (turret.Height + tank_p1.cannon_Len));
+            hp_p1_Pos = new Point(x - body.Width / 2, y - tank_p1.cannon_Len);
             hp_p1.Location = hp_p1_Pos;
             hp_p1.ForeColor = Color.Blue;
             hp_p1.Maximum = 2000;
@@ -109,12 +121,20 @@ namespace Tank_Practice
                 bg.Graphics.Clear(BackColor);
                 bg.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 bg.Graphics.FillRectangle(Brushes.Black, ground_Rect);
+                bg.Graphics.DrawImage(Properties.Resources.tank_body_blue, tank_p1.body_Rect.Left,
+                    tank_p1.body_Rect.Top, tank_p1.body_Rect.Width, tank_p1.body_Rect.Height);
+                PointF gun_Center = new PointF(tank_p1.gun_Rect.Width / 2, tank_p1.gun_Rect.Height / 2);
+                Bitmap gun = rotateImage(Properties.Resources.tank_gun_blue, gun_Center, (float)(tank_p1.deg - 90));
+                bg.Graphics.DrawImage(gun, tank_p1.gun_Rect.Left, tank_p1.gun_Rect.Top,
+                    tank_p1.gun_Rect.Width, tank_p1.gun_Rect.Height);
+                /*
                 bg.Graphics.DrawRectangle(Pens.Black, tank_p1.body_Rect);
                 bg.Graphics.DrawRectangle(Pens.Black, tank_p1.turret_Rect);
                 Point cannon_Start = tank_p1.center;
                 PointF cannon_End = tank_p1.getRotatedPos(tank_p1.deg, tank_p1.cannon_Len, cannon_Start);
                 Pen pen = new Pen(Color.Black, 5);
                 bg.Graphics.DrawLine(pen, cannon_Start, cannon_End);
+                */
                 int bullet_Size = 5;
                 int hit_Area_Size = 10;
                 double x, y;
@@ -140,6 +160,20 @@ namespace Tank_Practice
                 bg.Dispose();
             }
             g.Dispose();
+        }
+
+        private Bitmap rotateImage(Image img, PointF offSet, float angle)
+        {
+            Bitmap rotatedImg = new Bitmap(img.Width, img.Height);
+            rotatedImg.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+            using (Graphics g = Graphics.FromImage(rotatedImg))
+            {
+                g.TranslateTransform(offSet.X, offSet.Y);
+                g.RotateTransform(angle);
+                g.TranslateTransform(-offSet.X, -offSet.Y);
+                g.DrawImage(img, new PointF(0, 0));
+            }
+            return rotatedImg;
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -199,33 +233,33 @@ namespace Tank_Practice
             {
                 speed = 5;
                 Point tank_Body_Pos = tank_Obj.body_Rect.Location;
-                Point tank_Turret_Pos = tank_Obj.turret_Rect.Location;
+                Point tank_Gun_Pos = tank_Obj.gun_Rect.Location;
                 if (tank_Obj.L)
                 {
                     tank_Obj.center.X -= speed;
                     tank_Body_Pos.X -= speed;
-                    tank_Turret_Pos.X -= speed;
+                    tank_Gun_Pos.X -= speed;
                     if (tank_Obj.center.X < tank_Obj.body_Rect.Width / 2)
                     {
                         tank_Obj.center.X = tank_Obj.body_Rect.Width / 2;
                         tank_Body_Pos.X = 0;
-                        tank_Turret_Pos.X = tank_Obj.body_Rect.Width / 2 - tank_Obj.turret_Rect.Width / 2;
+                        tank_Gun_Pos.X = tank_Obj.body_Rect.Width / 2;
                     }
                 }
                 else if (tank_Obj.R)
                 {
                     tank_Obj.center.X += speed;
                     tank_Body_Pos.X += speed;
-                    tank_Turret_Pos.X += speed;
+                    tank_Gun_Pos.X += speed;
                     if (tank_Obj.center.X > tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width / 2)
                     {
                         tank_Obj.center.X = tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width / 2;
                         tank_Body_Pos.X = tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width;
-                        tank_Turret_Pos.X = tank_Obj.map_Rect.Width - (tank_Obj.body_Rect.Width / 2 + tank_Obj.turret_Rect.Width / 2);
+                        tank_Gun_Pos.X = tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width / 2;
                     }
                 }
                 tank_Obj.body_Rect.Location = tank_Body_Pos;
-                tank_Obj.turret_Rect.Location = tank_Turret_Pos;
+                tank_Obj.gun_Rect.Location = tank_Gun_Pos;
                 gauge_Pos.X = tank_Obj.center.X - tank_Obj.body_Rect.Width / 2;
                 gauge.Location = gauge_Pos;
                 deg = 1;
