@@ -15,6 +15,7 @@ namespace Tank_Practice
 {
     public partial class Form1 : Form
     {
+        //탱크 관리용 변수
         ProgressBar gauge_p1;
         ProgressBar hp_p1;
         bool bRunning;
@@ -26,7 +27,13 @@ namespace Tank_Practice
         Point gauge_p1_Pos;
         Point hp_p1_Pos;
         int power;
+
         Image myImage;
+
+
+        //네트워크 커넥터 폼용 변수
+        ConnectorForm ConnFrm;
+
         public Form1()
         {
             InitializeComponent();
@@ -276,16 +283,39 @@ namespace Tank_Practice
             gauge_p1.Refresh();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //return;
-            MessageBox.Show("ffff");
-        }
-
         private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("connect menu");
-            ResignToolStripMenuItem.Enabled = true;
+            //항복버튼 활성화
+            //ResignToolStripMenuItem.Enabled = true;
+
+            foreach (Form frm in Application.OpenForms)
+            {
+                if (frm.Name == "ConnectorForm")
+                {
+                    frm.Activate();
+                    return;
+                }
+            }
+
+            ConnFrm = new ConnectorForm();
+            ConnFrm.Owner = this;
+            ConnFrm.parent = this;
+
+            ConnFrm.Show();
+        }
+
+        public m_Server server;
+        public void openServer()
+        {
+            server = new m_Server(ConnFrm);
+            server.StartServer();
+        }
+
+        public m_Client client;
+        public void connectServer()
+        {
+            client = new m_Client(ConnFrm);
+            client.ConnectToServer();
         }
     }
 }
