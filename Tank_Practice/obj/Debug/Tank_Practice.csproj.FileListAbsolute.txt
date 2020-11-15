@@ -28,4 +28,13 @@ C:\Users\SNMHZ\Source\Repos\SNMHZ\TankTankTank\Tank_Practice\obj\Debug\Tank_Prac
 C:\Users\SNMHZ\Source\Repos\SNMHZ\TankTankTank\Tank_Practice\obj\Debug\Tank_Practice.csproj.CoreCompileInputs.cache
 C:\Users\SNMHZ\Source\Repos\SNMHZ\TankTankTank\Tank_Practice\obj\Debug\Tank_Practice.exe
 C:\Users\SNMHZ\Source\Repos\SNMHZ\TankTankTank\Tank_Practice\obj\Debug\Tank_Practice.pdb
-C:\Users\SNMHZ\Source\Repos\SNMHZ\TankTankTank\Tank_Practice\obj\Debug\Tank_Practice.ConnectorForm.resources
+C:\Users\user\Documents\GitHub\TankTankTank\Tank_Practice\bin\Debug\Tank_Practice.exe.config
+C:\Users\user\Documents\GitHub\TankTankTank\Tank_Practice\bin\Debug\Tank_Practice.exe
+C:\Users\user\Documents\GitHub\TankTankTank\Tank_Practice\bin\Debug\Tank_Practice.pdb
+C:\Users\user\Documents\GitHub\TankTankTank\Tank_Practice\obj\Debug\Tank_Practice.csprojAssemblyReference.cache
+C:\Users\user\Documents\GitHub\TankTankTank\Tank_Practice\obj\Debug\Tank_Practice.Form1.resources
+C:\Users\user\Documents\GitHub\TankTankTank\Tank_Practice\obj\Debug\Tank_Practice.Properties.Resources.resources
+C:\Users\user\Documents\GitHub\TankTankTank\Tank_Practice\obj\Debug\Tank_Practice.csproj.GenerateResource.cache
+C:\Users\user\Documents\GitHub\TankTankTank\Tank_Practice\obj\Debug\Tank_Practice.csproj.CoreCompileInputs.cache
+C:\Users\user\Documents\GitHub\TankTankTank\Tank_Practice\obj\Debug\Tank_Practice.exe
+C:\Users\user\Documents\GitHub\TankTankTank\Tank_Practice\obj\Debug\Tank_Practice.pdb
