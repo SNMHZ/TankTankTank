@@ -37,6 +37,13 @@ namespace Tank_Practice
                 form1.tank_Player2.gun_Rect.Y = Int32.Parse(result[7]) - gun.Height / 2;
                 form1.hp_Player2.Value = Int32.Parse(result[8]);
             }
+            if (result[0] == "b")
+            {
+                form1.tank_Player.power = Int32.Parse(result[1]);
+                PointF pos = new PointF(form1.ClientRectangle.Width-Int32.Parse(result[2]), Int32.Parse(result[3]));
+                form1.tank_Player.deg = Int32.Parse(result[4]);
+                form1.tank_Player.bullets.Add(new Bullet(pos, Int32.Parse(result[1]), Int32.Parse(result[4])-90, form1.tank_Player.map_Rect));
+            }
         }
     }
 

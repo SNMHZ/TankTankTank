@@ -399,19 +399,18 @@ namespace Tank_Practice
                     {
 
                         server.SendMessage("b " + power.ToString() + " " +
-                        temp.X.ToString() + " " +
-                        temp.Y.ToString() +" "+
-                        tank_Player.deg.ToString());
+                        ((int)temp.X).ToString() + " " +
+                        ((int)temp.Y).ToString().ToString() + " " +
+                        ((int)tank_Player.deg).ToString());
                     }
                     else if (client_connected)
                     {
                         client.SendMessage("b " + power.ToString() + " " +
-                        temp.X.ToString() + " " +
-                        temp.Y.ToString() + " " +
-                        tank_Player.deg.ToString());
+                        ((int)temp.X).ToString() + " " +
+                        ((int)temp.Y).ToString().ToString() + " " +
+                        ((int)tank_Player.deg).ToString());
                     }
                     tank_Player2.shoot(power2);
-                    tank_Player2.charge_Cannon = false;
                     break;
             }
         }
