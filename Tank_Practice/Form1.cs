@@ -70,8 +70,8 @@ namespace Tank_Practice
 
         private void resetGame()
         {
-            Size body = new Size(100, 40);
-            Size gun = new Size(50, 9);
+            Size body = new Size(75, 30);
+            Size gun = new Size(38, 7);
             int ground_Height = 100;
             ground_Rect = new Rectangle(new Point(0, map_Rect.Height - ground_Height),
                 new Size(map_Rect.Width, ground_Height));
@@ -101,7 +101,7 @@ namespace Tank_Practice
             gauge_Player.Visible = true;
             this.Controls.Add(gauge_Player);
             hp_Player = new ProgressBar();
-            hp_Player.Size = new Size(100, 20);
+            hp_Player.Size = new Size(75, 15);
             hp_Player.Style = ProgressBarStyle.Continuous;
             hp_Player_Pos = new Point(x - body.Width / 2, y - (tank_Player.cannon_Len + hp_Player.Height));
             hp_Player.Location = hp_Player_Pos;
