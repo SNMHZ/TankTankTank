@@ -305,11 +305,11 @@ namespace Tank_Practice
                     tank_Obj.gun_Axis.X = tank_Obj.center.X + tank_Obj.body_Rect.Width / 8;
                     tank_Body_Pos.X += speed;
                     tank_Gun_Pos.X += speed;
-                    if (tank_Obj.center.X + tank_Obj.gun_Rect.Width > terrain_Rect.Left)
+                    if (tank_Obj.gun_Axis.X + tank_Obj.gun_Rect.Width > terrain_Rect.Left)
                     {
                         tank_Obj.center.X = terrain_Rect.Left - tank_Obj.gun_Rect.Width;
                         tank_Obj.gun_Axis.X = tank_Obj.center.X + tank_Obj.body_Rect.Width / 8;
-                        tank_Body_Pos.X = tank_Obj.center.X - tank_Obj.body_Rect.Width / 2;
+                        tank_Body_Pos.X = tank_Obj.center.X - tank_Obj.gun_Rect.Width;
                         tank_Gun_Pos.X = tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width / 2;
                     }
                     if (tank_Obj.center.X > tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width / 2)
