@@ -27,6 +27,7 @@ namespace Tank_Practice
         Point gauge_p1_Pos;
         Point hp_p1_Pos;
         int power;
+        Image myImage;
 
         //네트워크 커넥터 폼용 변수
         ConnectorForm ConnFrm;
@@ -35,6 +36,7 @@ namespace Tank_Practice
         {
             InitializeComponent();
             map_Rect = this.ClientRectangle;
+            myImage = Image.FromFile(@"..\..\map5.png");
             resetGame();
             bRunning = true;
             tank_Thread_p1 = new Thread(() => operateTank(tank_p1, hp_p1, hp_p1_Pos));
@@ -120,6 +122,7 @@ namespace Tank_Practice
             {
                 bg.Graphics.Clear(BackColor);
                 bg.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                bg.Graphics.DrawImage(myImage, 0, 0);
                 bg.Graphics.FillRectangle(Brushes.Black, ground_Rect);
                 bg.Graphics.DrawImage(Properties.Resources.tank_body_blue, tank_p1.body_Rect.Left,
                     tank_p1.body_Rect.Top, tank_p1.body_Rect.Width, tank_p1.body_Rect.Height);
