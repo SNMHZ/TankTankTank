@@ -58,7 +58,7 @@ namespace Tank_Practice
             }
             catch(Exception ex)
             {
-                MessageBox.Show("Connection Failed! check your Address.");
+                ConnectLoglistBox.Items.Add("Connection Failed! check your Address.");
             }
         }
 

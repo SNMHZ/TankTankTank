@@ -8,9 +8,60 @@ using System.Net.Sockets;
 
 namespace Tank_Practice
 {
-    public static void Descripter()
+    public class Descripter
     {
+        Form1 form1;
+        public Descripter(Form1 _form1)
+        {
+            form1 = _form1;
+        }
 
+        public void descript(string msg)
+        {
+            //move msg
+            if (msg[0] == 'm')
+            {
+                //up
+                if (msg[1] == 'u')
+                {
+                    if (msg[2] == 't')
+                    {
+                        //form1.tank_Player.R = true;
+                    }
+                    else
+                    {
+
+                    }
+                }
+                //down
+                else if (msg[1] == 'd')
+                {
+
+                }
+                //right
+                else if (msg[1] == 'r')
+                {
+                    if (msg[2] == 't')
+                    {
+                        form1.tank_Player.R = true;
+                    }
+                    else
+                    {
+                        form1.tank_Player.R = false;
+                    }
+                }
+                //left
+                else if (msg[1] == 'l')
+                {
+
+                }
+
+            }
+            else
+            {
+
+            }
+        }
     }
 
     public class m_Server
@@ -31,6 +82,7 @@ namespace Tank_Practice
         private AsyncCallback m_AcceptHandler;
         private int port;
         public ConnectorForm connFrm;
+        Descripter descripter;
         public m_Server(ConnectorForm _connFrm)
         {
             m_ReceiveHandler = new AsyncCallback(handleReceivedData);
@@ -79,6 +131,7 @@ namespace Tank_Practice
                 connFrm.ConnectLoglistBox.Items.Add("Client Connected!!");
                 connFrm.connectReq = true;
                 connFrm.setserverconnFlag();
+                descripter = new Descripter(connFrm.parent);
             }
             catch (Exception ex)
             {
@@ -116,6 +169,7 @@ namespace Tank_Practice
                 byte[] msgByte = new byte[recvBytes];
                 Array.Copy(ao.Buffer, msgByte, recvBytes);
                 connFrm.ConnectLoglistBox.Items.Add("메세지 받음 : " + Encoding.Unicode.GetString(msgByte));
+                descripter.descript(Encoding.Unicode.GetString(msgByte));
             }
             try
             {
@@ -173,6 +227,7 @@ namespace Tank_Practice
         int hostPort;
         string hostName;
         public ConnectorForm connFrm;
+        Descripter descripter;
         public m_Client(ConnectorForm _connFrm)
         {
             m_ReceiveHandler = new AsyncCallback(handleReceivedData);
@@ -202,6 +257,7 @@ namespace Tank_Practice
                 m_ClientSocket.BeginReceive(ao.Buffer, 0, ao.Buffer.Length, SocketFlags.None, m_ReceiveHandler, ao);
                 connFrm.ConnectLoglistBox.Items.Add("연결 성공");
                 connFrm.setclientconnFlag();
+                descripter = new Descripter(connFrm.parent);
             }
             else
             {

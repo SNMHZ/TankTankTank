@@ -19,7 +19,7 @@ namespace Tank_Practice
         ProgressBar gauge_Player;
         ProgressBar hp_Player;
         bool bRunning;
-        Tank tank_Player;
+        public Tank tank_Player;
         Thread tank_Thread_Player;
         Thread charge_Gauge_Thread_Player;
         Rectangle map_Rect;
@@ -233,21 +233,45 @@ namespace Tank_Practice
                 case Keys.Up:
                     if (server_connected)
                     {
-                        server.SendMessage("test");
+                        server.SendMessage("mut");
                     }
                     else if(client_connected)
                     {
-                        client.SendMessage("test2");
+                        client.SendMessage("mut");
                     }
                     tank_Player.U = true;
                     break;
                 case Keys.Down:
+                    if (server_connected)
+                    {
+                        server.SendMessage("mdt");
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("mdt");
+                    }
                     tank_Player.D = true;
                     break;
                 case Keys.Left:
+                    if (server_connected)
+                    {
+                        server.SendMessage("mlt");
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("mlt");
+                    }
                     tank_Player.L = true;
                     break;
                 case Keys.Right:
+                    if (server_connected)
+                    {
+                        server.SendMessage("mrt");
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("mrt");
+                    }
                     tank_Player.R = true;
                     break;
                 case Keys.Space:
@@ -263,15 +287,47 @@ namespace Tank_Practice
             switch (e.KeyCode)
             {
                 case Keys.Up:
+                    if (server_connected)
+                    {
+                        server.SendMessage("muf");
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("muf");
+                    }
                     tank_Player.U = false;
                     break;
                 case Keys.Down:
+                    if (server_connected)
+                    {
+                        server.SendMessage("mdf");
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("mdf");
+                    }
                     tank_Player.D = false;
                     break;
                 case Keys.Left:
+                    if (server_connected)
+                    {
+                        server.SendMessage("mlf");
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("mlf");
+                    }
                     tank_Player.L = false;
                     break;
                 case Keys.Right:
+                    if (server_connected)
+                    {
+                        server.SendMessage("mrf");
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("mrf");
+                    }
                     tank_Player.R = false;
                     break;
                 case Keys.Space:
