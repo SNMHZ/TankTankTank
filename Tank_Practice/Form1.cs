@@ -61,8 +61,8 @@ namespace Tank_Practice
 
         private void resetGame()
         {
-            Size body = new Size(60, 40);
-            Size gun = new Size(40, 7);
+            Size body = new Size(75, 50);
+            Size gun = new Size(50, 9);
             int ground_Height = 100;
             ground_Rect = new Rectangle(new Point(0, map_Rect.Height - ground_Height),
                 new Size(map_Rect.Width, ground_Height));
@@ -92,9 +92,9 @@ namespace Tank_Practice
             gauge_p1.Visible = true;
             this.Controls.Add(gauge_p1);
             hp_p1 = new ProgressBar();
-            hp_p1.Size = new Size(60, 10);
+            hp_p1.Size = new Size(75, 10);
             hp_p1.Style = ProgressBarStyle.Continuous;
-            hp_p1_Pos = new Point(x - body.Width / 2, y - tank_p1.cannon_Len);
+            hp_p1_Pos = new Point(x - body.Width / 2, y - (tank_p1.cannon_Len + hp_p1.Height));
             hp_p1.Location = hp_p1_Pos;
             hp_p1.ForeColor = Color.Blue;
             hp_p1.Maximum = 2000;
@@ -123,10 +123,18 @@ namespace Tank_Practice
                 bg.Graphics.FillRectangle(Brushes.Black, ground_Rect);
                 bg.Graphics.DrawImage(Properties.Resources.tank_body_blue, tank_p1.body_Rect.Left,
                     tank_p1.body_Rect.Top, tank_p1.body_Rect.Width, tank_p1.body_Rect.Height);
+                Size resize = tank_p1.gun_Rect.Size;
+                Bitmap gun_Resized = new Bitmap(Properties.Resources.tank_gun_blue, resize);
+                Bitmap gun_Rotated = rotateImage(gun_Resized, (float)(tank_p1.deg - 90));
+                bg.Graphics.DrawImage(gun_Rotated, tank_p1.center.X, tank_p1.center.Y - (gun_Rotated.Height - tank_p1.gun_Rect.Height / 2));
+                Point cannon_Start = tank_p1.center;
+                PointF cannon_End = tank_p1.getRotatedPos(tank_p1.deg, tank_p1.cannon_Len, cannon_Start);
+                /*
                 PointF gun_Center = new PointF(tank_p1.gun_Rect.Width / 2, tank_p1.gun_Rect.Height / 2);
                 Bitmap gun = rotateImage(Properties.Resources.tank_gun_blue, gun_Center, (float)(tank_p1.deg - 90));
                 bg.Graphics.DrawImage(gun, tank_p1.gun_Rect.Left, tank_p1.gun_Rect.Top,
                     tank_p1.gun_Rect.Width, tank_p1.gun_Rect.Height);
+                */
                 /*
                 bg.Graphics.DrawRectangle(Pens.Black, tank_p1.body_Rect);
                 bg.Graphics.DrawRectangle(Pens.Black, tank_p1.turret_Rect);
@@ -162,15 +170,43 @@ namespace Tank_Practice
             g.Dispose();
         }
 
-        private Bitmap rotateImage(Image img, PointF offSet, float angle)
+        private Bitmap rotateImage(Image img, float angle)
         {
-            Bitmap rotatedImg = new Bitmap(img.Width, img.Height);
+            int newWidth = 0;
+            int newHeight = 0;
+            Bitmap originalImg = new Bitmap(img.Width, img.Height);
+            if (angle < 0)
+            {
+                angle += 360;
+            }
+            if (angle <= 90)
+            {
+                newWidth = (int)(originalImg.Width * Math.Cos(2 * Math.PI * angle / 360) + originalImg.Height * Math.Sin(2 * Math.PI * angle / 360));
+                newHeight = (int)(originalImg.Height * Math.Cos(2 * Math.PI * angle / 360) + originalImg.Width * Math.Sin(2 * Math.PI * angle / 360));
+            }
+            else if (angle > 90 && angle <= 180)
+            {
+                newWidth = (int)(originalImg.Width * -Math.Cos(2 * Math.PI * angle / 360) + originalImg.Height * Math.Sin(2 * Math.PI * angle / 360));
+                newHeight = (int)(originalImg.Height * -Math.Cos(2 * Math.PI * angle / 360) + originalImg.Width * Math.Sin(2 * Math.PI * angle / 360));
+            }
+            else if (angle > 180 && angle <= 270)
+            {
+                newWidth = (int)(originalImg.Width * -Math.Cos(2 * Math.PI * angle / 360) + originalImg.Height * -Math.Sin(2 * Math.PI * angle / 360));
+                newHeight = (int)(originalImg.Height * -Math.Cos(2 * Math.PI * angle / 360) + originalImg.Width * -Math.Sin(2 * Math.PI * angle / 360));
+            }
+            else if (angle > 270 && angle <= 360)
+            {
+                newWidth = (int)(originalImg.Width * Math.Cos(2 * Math.PI * angle / 360) + originalImg.Height * -Math.Sin(2 * Math.PI * angle / 360));
+                newHeight = (int)(originalImg.Height * Math.Cos(2 * Math.PI * angle / 360) + originalImg.Width * -Math.Sin(2 * Math.PI * angle / 360));
+            }
+            Bitmap rotatedImg = new Bitmap(newWidth, newHeight);
             rotatedImg.SetResolution(img.HorizontalResolution, img.VerticalResolution);
             using (Graphics g = Graphics.FromImage(rotatedImg))
             {
-                g.TranslateTransform(offSet.X, offSet.Y);
+                g.TranslateTransform(newWidth / 2, newHeight / 2);
                 g.RotateTransform(angle);
-                g.TranslateTransform(-offSet.X, -offSet.Y);
+                g.TranslateTransform(-originalImg.Width / 2, -originalImg.Height / 2);
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 g.DrawImage(img, new PointF(0, 0));
             }
             return rotatedImg;
