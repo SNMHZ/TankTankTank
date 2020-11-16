@@ -31,6 +31,7 @@ namespace Tank_Practice
         Rectangle terrain_Rect;
         Rectangle ground_Rect;
         Image myImage;
+        Image BG, exPlo;
 
         //네트워크 커넥터 폼용 변수
         ConnectorForm ConnFrm;
@@ -39,7 +40,8 @@ namespace Tank_Practice
         {
             InitializeComponent();
             map_Rect = this.ClientRectangle;
-            myImage = Image.FromFile(@"..\..\map5.png");
+            BG = Properties.Resources.map5;
+            exPlo = Properties.Resources.explosion;
             resetGame();
             bRunning = true;
             tank_Thread_Player = new Thread(() => operateTank(tank_Player, hp_Player, hp_Player_Pos));
@@ -125,7 +127,7 @@ namespace Tank_Practice
             {
                 bg.Graphics.Clear(BackColor);
                 bg.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                bg.Graphics.DrawImage(myImage, 0, 0);
+                bg.Graphics.DrawImage(BG, 0, 0);
                 bg.Graphics.FillRectangle(Brushes.Black, ground_Rect);
                 Size resize = tank_Player.gun_Rect.Size;
                 Bitmap gun_Resized = new Bitmap(Properties.Resources.tank_gun_blue, resize);
@@ -156,9 +158,13 @@ namespace Tank_Practice
                 {
                     if (tank_Player.bullets[i].hit)
                     {
+                        x = tank_Player.bullets[i].current_Pos.X - bullet_Size;
+                        y = tank_Player.bullets[i].current_Pos.Y - bullet_Size;
+                        bg.Graphics.FillEllipse(Brushes.Black, (float)x, (float)y, bullet_Size * 2, bullet_Size * 2);
                         x = tank_Player.bullets[i].current_Pos.X - hit_Area_Size;
                         y = tank_Player.bullets[i].current_Pos.Y - hit_Area_Size;
-                        bg.Graphics.FillRectangle(Brushes.Red, (float)x, (float)y, hit_Area_Size * 2, hit_Area_Size * 2);
+                        bg.Graphics.DrawImage(exPlo, (float)x, (float)y, hit_Area_Size * 2, hit_Area_Size * 2);
+                        //bg.Graphics.FillRectangle(Brushes.Red, (float)x, (float)y, hit_Area_Size * 2, hit_Area_Size * 2);
                         tank_Player.bullets.RemoveAt(i);
                     }
                     else
