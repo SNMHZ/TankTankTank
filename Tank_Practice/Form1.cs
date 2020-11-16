@@ -27,7 +27,7 @@ namespace Tank_Practice
         Point gauge_p1_Pos;
         Point hp_p1_Pos;
         int power;
-        Image myImage;
+        Image BG, exPlo;
 
         //네트워크 커넥터 폼용 변수
         ConnectorForm ConnFrm;
@@ -37,7 +37,8 @@ namespace Tank_Practice
         {
             InitializeComponent();
             map_Rect = this.ClientRectangle;
-            myImage = Image.FromFile(@"..\..\map5.png");
+            BG = Properties.Resources.map5;
+            exPlo = Properties.Resources.explosion;
             resetGame();
             bRunning = true;
             tank_Thread_p1 = new Thread(() => operateTank(tank_p1, hp_p1, hp_p1_Pos));
@@ -124,7 +125,7 @@ namespace Tank_Practice
             {
                 bg.Graphics.Clear(BackColor);
                 bg.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                bg.Graphics.DrawImage(myImage, 0, 0);
+                bg.Graphics.DrawImage(BG, 0, 0);
                 bg.Graphics.FillRectangle(Brushes.Black, ground_Rect);
                 Size resize = tank_p1.gun_Rect.Size;
                 Bitmap gun_Resized = new Bitmap(Properties.Resources.tank_gun_blue, resize);
@@ -157,14 +158,15 @@ namespace Tank_Practice
                     {
                         x = tank_p1.bullets[i].current_Pos.X - hit_Area_Size;
                         y = tank_p1.bullets[i].current_Pos.Y - hit_Area_Size;
-                        bg.Graphics.FillRectangle(Brushes.Red, (float)x, (float)y, hit_Area_Size * 2, hit_Area_Size * 2);
+                        bg.Graphics.DrawImage(exPlo, (float)x, (float)y, hit_Area_Size * 2, hit_Area_Size * 2);
+                        //bg.Graphics.FillRectangle(Brushes.Red, (float)x, (float)y, hit_Area_Size * 2, hit_Area_Size * 2);
                         tank_p1.bullets.RemoveAt(i);
                     }
                     else
                     {
                         x = tank_p1.bullets[i].current_Pos.X - bullet_Size;
                         y = tank_p1.bullets[i].current_Pos.Y - bullet_Size;
-                        bg.Graphics.FillEllipse(Brushes.Black, (float)x, (float)y, bullet_Size * 2, bullet_Size * 2);
+                        bg.Graphics.FillEllipse(Brushes.Black, (float)x, (float)y, bullet_Size * 3, bullet_Size * 3);
                     }
                 }
                 Font font = new Font("Ariel", 16);
