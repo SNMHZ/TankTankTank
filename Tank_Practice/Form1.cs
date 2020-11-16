@@ -181,7 +181,8 @@ namespace Tank_Practice
 
                 Size resize2 = tank_Player2.gun_Rect.Size;
                 Bitmap gun_Resized2 = new Bitmap(Properties.Resources.tank_gun_red, resize2);
-                Bitmap gun_Rotated2 = rotateImage(gun_Resized2, (float)(tank_Player2.deg));
+                Bitmap gun_Rotated2 = rotateImage(gun_Resized2, (float)(tank_Player2.deg-90));
+                gun_Rotated2.RotateFlip(RotateFlipType.Rotate180FlipX);
                 bg.Graphics.DrawImage(gun_Rotated2, tank_Player2.gun_Axis.X - gun_Rotated2.Width, tank_Player2.gun_Axis.Y - (gun_Rotated2.Height - tank_Player2.gun_Rect.Height / 2));
                 bg.Graphics.DrawImage(Properties.Resources.tank_body_red, tank_Player2.body_Rect.Left,
                     tank_Player2.body_Rect.Top, tank_Player.body_Rect.Width, tank_Player.body_Rect.Height);

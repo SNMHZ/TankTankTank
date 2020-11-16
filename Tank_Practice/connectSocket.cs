@@ -33,7 +33,6 @@ namespace Tank_Practice
                 form1.tank_Player2.gun_Axis.X = form1.ClientRectangle.Width - Int32.Parse(result[3]);
                 form1.tank_Player2.gun_Axis.Y = Int32.Parse(result[4]);
                 form1.tank_Player2.deg = Int32.Parse(result[5]);
-                //new Point(x2, y2 - gun.Height / 2)
                 form1.tank_Player2.gun_Rect.X = form1.ClientRectangle.Width - form1.tank_Player2.center.X;
                 form1.tank_Player2.gun_Rect.Y = Int32.Parse(result[7]) - gun.Height / 2;
                 form1.hp_Player2.Value = Int32.Parse(result[8]);
