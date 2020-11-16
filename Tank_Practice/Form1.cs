@@ -35,6 +35,7 @@ namespace Tank_Practice
 
         //네트워크 커넥터 폼용 변수
         ConnectorForm ConnFrm;
+        public bool server_connected, client_connected;
 
         public Form1()
         {
@@ -47,6 +48,8 @@ namespace Tank_Practice
             tank_Thread_Player = new Thread(() => operateTank(tank_Player, hp_Player, hp_Player_Pos));
             // tank_Thread_Player.IsBackground = true;
             tank_Thread_Player.Start();
+            draw();
+            server_connected = client_connected = false;
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -232,6 +235,14 @@ namespace Tank_Practice
             switch (e.KeyCode)
             {
                 case Keys.Up:
+                    if (server_connected)
+                    {
+                        server.SendMessage("test");
+                    }
+                    else if(client_connected)
+                    {
+                        client.SendMessage("test2");
+                    }
                     tank_Player.U = true;
                     break;
                 case Keys.Down:
