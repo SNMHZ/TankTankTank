@@ -18,7 +18,7 @@ namespace Tank_Practice
         //탱크 관리용 변수
 
         ProgressBar gauge_Player, gauge_Player2;
-        ProgressBar hp_Player, hp_Player2;
+        public ProgressBar hp_Player, hp_Player2;
         bool bRunning, bRunning2;
         public Tank tank_Player, tank_Player2;
         Thread tank_Thread_Player, tank_Thread_Player2;
@@ -49,10 +49,10 @@ namespace Tank_Practice
             bRunning = true;
             bRunning2 = true;
             tank_Thread_Player = new Thread(() => operateTank(tank_Player, hp_Player, hp_Player_Pos));
-            tank_Thread_Player2 = new Thread(() => operateTank(tank_Player2, hp_Player2, hp_Player_Pos2));
+            //tank_Thread_Player2 = new Thread(() => operateTank(tank_Player2, hp_Player2, hp_Player_Pos2));
             // tank_Thread_Player.IsBackground = true;
             tank_Thread_Player.Start();
-            tank_Thread_Player2.Start();
+            //tank_Thread_Player2.Start();
             draw();
             server_connected = client_connected = false;
         }
@@ -346,10 +346,6 @@ namespace Tank_Practice
                     tank_Player.charge_Cannon = true;
                     charge_Gauge_Thread_Player = new Thread(() => chargeGauge(tank_Player, gauge_Player));
                     charge_Gauge_Thread_Player.Start();
-
-                    tank_Player2.charge_Cannon = true;
-                    charge_Gauge_Thread_Player2 = new Thread(() => chargeGauge(tank_Player2, gauge_Player2));
-                    charge_Gauge_Thread_Player2.Start();
                     break;
             }
         }

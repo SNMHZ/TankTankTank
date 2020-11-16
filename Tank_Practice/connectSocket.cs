@@ -19,7 +19,14 @@ namespace Tank_Practice
         public void descript(string msg)
         {
             //move msg
-            
+            char[] sep = { ' ' };
+            string[] result = msg.Split(sep);
+            form1.tank_Player2.center.X = Int32.Parse(result[0]);
+            form1.tank_Player2.center.Y = Int32.Parse(result[1]);
+            form1.tank_Player2.gun_Axis.X = Int32.Parse(result[2]);
+            form1.tank_Player2.gun_Axis.Y = Int32.Parse(result[3]);
+            form1.tank_Player2.deg = Int32.Parse(result[4]);
+            form1.hp_Player2.Value = Int32.Parse(result[5]);
         }
     }
 
