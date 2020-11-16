@@ -164,7 +164,7 @@ namespace Tank_Practice
                     {
                         x = tank_p1.bullets[i].current_Pos.X - bullet_Size;
                         y = tank_p1.bullets[i].current_Pos.Y - bullet_Size;
-                        bg.Graphics.FillEllipse(Brushes.Black, (float)x, (float)y, bullet_Size * 2, bullet_Size * 2);
+                        bg.Graphics.FillEllipse(Brushes.Black, (float)x, (float)y, bullet_Size * 3, bullet_Size * 3);
                     }
                 }
                 Font font = new Font("Ariel", 16);
