@@ -235,47 +235,47 @@ namespace Tank_Practice
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    if (server_connected)
-                    {
-                        server.SendMessage("mut");
-                    }
-                    else if(client_connected)
-                    {
-                        client.SendMessage("mut");
-                    }
+                    //if (server_connected)
+                    //{
+                    //    server.SendMessage("mut");
+                    //}
+                    //else if(client_connected)
+                    //{
+                    //    client.SendMessage("mut");
+                    //}
                     tank_Player.U = true;
                     break;
                 case Keys.Down:
-                    if (server_connected)
-                    {
-                        server.SendMessage("mdt");
-                    }
-                    else if (client_connected)
-                    {
-                        client.SendMessage("mdt");
-                    }
+                    //if (server_connected)
+                    //{
+                    //    server.SendMessage("mdt");
+                    //}
+                    //else if (client_connected)
+                    //{
+                    //    client.SendMessage("mdt");
+                    //}
                     tank_Player.D = true;
                     break;
                 case Keys.Left:
-                    if (server_connected)
-                    {
-                        server.SendMessage("mlt");
-                    }
-                    else if (client_connected)
-                    {
-                        client.SendMessage("mlt");
-                    }
+                    //if (server_connected)
+                    //{
+                    //    server.SendMessage("mlt");
+                    //}
+                    //else if (client_connected)
+                    //{
+                    //    client.SendMessage("mlt");
+                    //}
                     tank_Player.L = true;
                     break;
                 case Keys.Right:
-                    if (server_connected)
-                    {
-                        server.SendMessage("mrt");
-                    }
-                    else if (client_connected)
-                    {
-                        client.SendMessage("mrt");
-                    }
+                    //if (server_connected)
+                    //{
+                    //    server.SendMessage("mrt");
+                    //}
+                    //else if (client_connected)
+                    //{
+                    //    client.SendMessage("mrt");
+                    //}
                     tank_Player.R = true;
                     break;
                 case Keys.Space:
@@ -291,47 +291,47 @@ namespace Tank_Practice
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    if (server_connected)
-                    {
-                        server.SendMessage("muf");
-                    }
-                    else if (client_connected)
-                    {
-                        client.SendMessage("muf");
-                    }
+                    //if (server_connected)
+                    //{
+                    //    server.SendMessage("muf");
+                    //}
+                    //else if (client_connected)
+                    //{
+                    //    client.SendMessage("muf");
+                    //}
                     tank_Player.U = false;
                     break;
                 case Keys.Down:
-                    if (server_connected)
-                    {
-                        server.SendMessage("mdf");
-                    }
-                    else if (client_connected)
-                    {
-                        client.SendMessage("mdf");
-                    }
+                    //if (server_connected)
+                    //{
+                    //    server.SendMessage("mdf");
+                    //}
+                    //else if (client_connected)
+                    //{
+                    //    client.SendMessage("mdf");
+                    //}
                     tank_Player.D = false;
                     break;
                 case Keys.Left:
-                    if (server_connected)
-                    {
-                        server.SendMessage("mlf");
-                    }
-                    else if (client_connected)
-                    {
-                        client.SendMessage("mlf");
-                    }
+                    //if (server_connected)
+                    //{
+                    //    server.SendMessage("mlf");
+                    //}
+                    //else if (client_connected)
+                    //{
+                    //    client.SendMessage("mlf");
+                    //}
                     tank_Player.L = false;
                     break;
                 case Keys.Right:
-                    if (server_connected)
-                    {
-                        server.SendMessage("mrf");
-                    }
-                    else if (client_connected)
-                    {
-                        client.SendMessage("mrf");
-                    }
+                    //if (server_connected)
+                    //{
+                    //    server.sendmessage("mrf");
+                    //}
+                    //else if (client_connected)
+                    //{
+                    //    client.sendmessage("mrf");
+                    //}
                     tank_Player.R = false;
                     break;
                 case Keys.Space:
@@ -422,6 +422,28 @@ namespace Tank_Practice
                 if (bDraw)
                 {
                     draw();
+                }
+                if (tank_Obj.U || tank_Obj.D || tank_Obj.L || tank_Obj.R) {
+                    if (server_connected)
+                    {
+
+                        server.SendMessage("t "+tank_Obj.center.X.ToString()+" " +
+                        tank_Obj.center.Y.ToString() + " " +
+                        tank_Obj.gun_Axis.X.ToString() + " " +
+                        tank_Obj.gun_Axis.Y.ToString() + " " +
+                        tank_Obj.deg.ToString() + " " +
+                        hp_Player.Value.ToString());
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("t " +tank_Obj.center.X.ToString() +" "+
+                        tank_Obj.center.Y.ToString() +" "+
+                        tank_Obj.gun_Axis.X.ToString() +" "+
+                        tank_Obj.gun_Axis.Y.ToString() +" "+
+                        tank_Obj.deg.ToString() +" "+
+                        hp_Player.Value.ToString());
+                    }
+
                 }
                 Thread.Sleep(20);
             }

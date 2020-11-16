@@ -19,48 +19,7 @@ namespace Tank_Practice
         public void descript(string msg)
         {
             //move msg
-            if (msg[0] == 'm')
-            {
-                //up
-                if (msg[1] == 'u')
-                {
-                    if (msg[2] == 't')
-                    {
-                        //form1.tank_Player.R = true;
-                    }
-                    else
-                    {
-
-                    }
-                }
-                //down
-                else if (msg[1] == 'd')
-                {
-
-                }
-                //right
-                else if (msg[1] == 'r')
-                {
-                    if (msg[2] == 't')
-                    {
-                        form1.tank_Player.R = true;
-                    }
-                    else
-                    {
-                        form1.tank_Player.R = false;
-                    }
-                }
-                //left
-                else if (msg[1] == 'l')
-                {
-
-                }
-
-            }
-            else
-            {
-
-            }
+            
         }
     }
 
@@ -302,6 +261,7 @@ namespace Tank_Practice
                 byte[] msgByte = new byte[recvBytes];
                 Array.Copy(ao.Buffer, msgByte, recvBytes);
                 connFrm.ConnectLoglistBox.Items.Add("메세지 받음 : " + Encoding.Unicode.GetString(msgByte));
+                descripter.descript(Encoding.Unicode.GetString(msgByte));
             }
             try
             {
