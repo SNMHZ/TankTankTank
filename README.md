@@ -1,4 +1,4 @@
 # TankTankTank
 Tank
 
-못생긴 탱크
+잘생긴 탱크
