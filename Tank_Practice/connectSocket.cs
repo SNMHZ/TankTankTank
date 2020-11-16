@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
 
@@ -21,12 +22,22 @@ namespace Tank_Practice
             //move msg
             char[] sep = { ' ' };
             string[] result = msg.Split(sep);
-            form1.tank_Player2.center.X = Int32.Parse(result[0]);
-            form1.tank_Player2.center.Y = Int32.Parse(result[1]);
-            form1.tank_Player2.gun_Axis.X = Int32.Parse(result[2]);
-            form1.tank_Player2.gun_Axis.Y = Int32.Parse(result[3]);
-            form1.tank_Player2.deg = Int32.Parse(result[4]);
-            form1.hp_Player2.Value = Int32.Parse(result[5]);
+            if (result[0] == "t")
+            {
+                Size body = new Size(75, 30);
+                Size gun = new Size(38, 7);
+                form1.tank_Player2.center.X = form1.ClientRectangle.Width - Int32.Parse(result[1]);
+                form1.tank_Player2.center.Y = Int32.Parse(result[2]);
+                form1.tank_Player2.body_Rect.Location = new Point(form1.tank_Player2.center.X - body.Width / 2,
+                    form1.tank_Player2.center.Y - body.Height / 4);
+                form1.tank_Player2.gun_Axis.X = form1.ClientRectangle.Width - Int32.Parse(result[3]);
+                form1.tank_Player2.gun_Axis.Y = Int32.Parse(result[4]);
+                form1.tank_Player2.deg = Int32.Parse(result[5]);
+                //new Point(x2, y2 - gun.Height / 2)
+                form1.tank_Player2.gun_Rect.X = form1.ClientRectangle.Width - form1.tank_Player2.center.X;
+                form1.tank_Player2.gun_Rect.Y = Int32.Parse(result[7]) - gun.Height / 2;
+                form1.hp_Player2.Value = Int32.Parse(result[8]);
+            }
         }
     }
 
@@ -101,7 +112,7 @@ namespace Tank_Practice
             }
             catch (Exception ex)
             {
-                connFrm.ConnectLoglistBox.Items.Add("연결 수락 도중 오류 발생 : " + ex.Message);
+                //connFrm.ConnectLoglistBox.Items.Add("연결 수락 도중 오류 발생 : " + ex.Message);
                 return;
             }
             AsyncObject ao = new AsyncObject(4096);

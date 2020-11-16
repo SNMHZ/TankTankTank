@@ -184,7 +184,7 @@ namespace Tank_Practice
                 Bitmap gun_Rotated2 = rotateImage(gun_Resized2, (float)(tank_Player2.deg));
                 bg.Graphics.DrawImage(gun_Rotated2, tank_Player2.gun_Axis.X - gun_Rotated2.Width, tank_Player2.gun_Axis.Y - (gun_Rotated2.Height - tank_Player2.gun_Rect.Height / 2));
                 bg.Graphics.DrawImage(Properties.Resources.tank_body_red, tank_Player2.body_Rect.Left,
-                    tank_Player2.body_Rect.Top, tank_Player2.body_Rect.Width, tank_Player2.body_Rect.Height);
+                    tank_Player2.body_Rect.Top, tank_Player.body_Rect.Width, tank_Player.body_Rect.Height);
                 Point cannon_Start2 = tank_Player2.gun_Axis;
                 PointF cannon_End2 = tank_Player2.getRotatedPos(tank_Player2.deg, tank_Player2.cannon_Len, cannon_Start);
 
@@ -504,6 +504,8 @@ namespace Tank_Practice
                         tank_Obj.gun_Axis.X.ToString() + " " +
                         tank_Obj.gun_Axis.Y.ToString() + " " +
                         tank_Obj.deg.ToString() + " " +
+                        tank_Obj.gun_Rect.X.ToString() + " " +
+                        tank_Obj.gun_Rect.Y.ToString() + " " +
                         hp_Player.Value.ToString());
                     }
                     else if (client_connected)
@@ -513,6 +515,8 @@ namespace Tank_Practice
                         tank_Obj.gun_Axis.X.ToString() +" "+
                         tank_Obj.gun_Axis.Y.ToString() +" "+
                         tank_Obj.deg.ToString() +" "+
+                        tank_Obj.gun_Rect.X.ToString() + " " +
+                        tank_Obj.gun_Rect.Y.ToString() + " " +
                         hp_Player.Value.ToString());
                     }
 
