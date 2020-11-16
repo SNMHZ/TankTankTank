@@ -63,14 +63,14 @@ namespace Tank_Practice
 
         private void resetGame()
         {
-            Size body = new Size(75, 50);
+            Size body = new Size(100, 40);
             Size gun = new Size(50, 9);
             int ground_Height = 100;
             ground_Rect = new Rectangle(new Point(0, map_Rect.Height - ground_Height),
                 new Size(map_Rect.Width, ground_Height));
             int x = body.Width / 2;
-            int y = map_Rect.Height - (ground_Height + body.Height / 2 + body.Height / 4);
-            tank_p1 = new Tank(new Point(x, y), new Rectangle(new Point(x - body.Width / 2, y - body.Height / 4), body),
+            int y = map_Rect.Height - (ground_Height + body.Height * 3 / 4);
+            tank_p1 = new Tank(new Point(x, y), new Point(x + body.Width / 8, y), new Rectangle(new Point(x - body.Width / 2, y - body.Height / 4), body),
                 new Rectangle(new Point(x, y - gun.Height / 2), gun),
                 new Rectangle(new Point(0, 0), new Size(map_Rect.Width, map_Rect.Height - ground_Height)));
             /*
@@ -94,7 +94,7 @@ namespace Tank_Practice
             gauge_p1.Visible = true;
             this.Controls.Add(gauge_p1);
             hp_p1 = new ProgressBar();
-            hp_p1.Size = new Size(75, 10);
+            hp_p1.Size = new Size(100, 20);
             hp_p1.Style = ProgressBarStyle.Continuous;
             hp_p1_Pos = new Point(x - body.Width / 2, y - (tank_p1.cannon_Len + hp_p1.Height));
             hp_p1.Location = hp_p1_Pos;
@@ -124,13 +124,13 @@ namespace Tank_Practice
                 bg.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 bg.Graphics.DrawImage(myImage, 0, 0);
                 bg.Graphics.FillRectangle(Brushes.Black, ground_Rect);
-                bg.Graphics.DrawImage(Properties.Resources.tank_body_blue, tank_p1.body_Rect.Left,
-                    tank_p1.body_Rect.Top, tank_p1.body_Rect.Width, tank_p1.body_Rect.Height);
                 Size resize = tank_p1.gun_Rect.Size;
                 Bitmap gun_Resized = new Bitmap(Properties.Resources.tank_gun_blue, resize);
                 Bitmap gun_Rotated = rotateImage(gun_Resized, (float)(tank_p1.deg - 90));
-                bg.Graphics.DrawImage(gun_Rotated, tank_p1.center.X, tank_p1.center.Y - (gun_Rotated.Height - tank_p1.gun_Rect.Height / 2));
-                Point cannon_Start = tank_p1.center;
+                bg.Graphics.DrawImage(gun_Rotated, tank_p1.gun_Axis.X, tank_p1.gun_Axis.Y - (gun_Rotated.Height - tank_p1.gun_Rect.Height / 2));
+                bg.Graphics.DrawImage(Properties.Resources.tank_body_blue, tank_p1.body_Rect.Left,
+                    tank_p1.body_Rect.Top, tank_p1.body_Rect.Width, tank_p1.body_Rect.Height);
+                Point cannon_Start = tank_p1.gun_Axis;
                 PointF cannon_End = tank_p1.getRotatedPos(tank_p1.deg, tank_p1.cannon_Len, cannon_Start);
                 /*
                 PointF gun_Center = new PointF(tank_p1.gun_Rect.Width / 2, tank_p1.gun_Rect.Height / 2);
@@ -276,11 +276,13 @@ namespace Tank_Practice
                 if (tank_Obj.L)
                 {
                     tank_Obj.center.X -= speed;
+                    tank_Obj.gun_Axis.X = tank_Obj.center.X + tank_Obj.body_Rect.Width / 8;
                     tank_Body_Pos.X -= speed;
                     tank_Gun_Pos.X -= speed;
                     if (tank_Obj.center.X < tank_Obj.body_Rect.Width / 2)
                     {
                         tank_Obj.center.X = tank_Obj.body_Rect.Width / 2;
+                        tank_Obj.gun_Axis.X = tank_Obj.center.X + tank_Obj.body_Rect.Width / 8;
                         tank_Body_Pos.X = 0;
                         tank_Gun_Pos.X = tank_Obj.body_Rect.Width / 2;
                     }
@@ -288,11 +290,13 @@ namespace Tank_Practice
                 else if (tank_Obj.R)
                 {
                     tank_Obj.center.X += speed;
+                    tank_Obj.gun_Axis.X = tank_Obj.center.X + tank_Obj.body_Rect.Width / 8;
                     tank_Body_Pos.X += speed;
                     tank_Gun_Pos.X += speed;
                     if (tank_Obj.center.X > tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width / 2)
                     {
                         tank_Obj.center.X = tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width / 2;
+                        tank_Obj.gun_Axis.X = tank_Obj.center.X + tank_Obj.body_Rect.Width / 8;
                         tank_Body_Pos.X = tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width;
                         tank_Gun_Pos.X = tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width / 2;
                     }

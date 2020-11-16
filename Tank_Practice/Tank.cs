@@ -57,6 +57,7 @@ namespace Tank_Practice
     public class Tank
     {
         public Point center;
+        public Point gun_Axis;
         public Rectangle body_Rect;
         public Rectangle gun_Rect;
         public Rectangle map_Rect;
@@ -67,9 +68,10 @@ namespace Tank_Practice
         public bool charge_Cannon;
         public List<Bullet> bullets;
 
-        public Tank(Point center, Rectangle body_Rect, Rectangle gun_Rect, Rectangle map_Rect)
+        public Tank(Point center, Point gun_Axis, Rectangle body_Rect, Rectangle gun_Rect, Rectangle map_Rect)
         {
             this.center = center;
+            this.gun_Axis = gun_Axis;
             this.body_Rect = body_Rect;
             this.gun_Rect = gun_Rect;
             this.map_Rect = map_Rect;
@@ -84,18 +86,18 @@ namespace Tank_Practice
             bullets = new List<Bullet>();
         }
 
-        public PointF getRotatedPos(double deg, int radius, Point center)
+        public PointF getRotatedPos(double deg, int radius, Point gun_Axis)
         {
             double rad = deg * Math.PI / 180.0;
             double dx = Math.Sin(rad) * radius;
             double dy = Math.Cos(rad) * radius;
-            return new PointF((float)(center.X + dx), (float)(center.Y - dy));
+            return new PointF((float)(gun_Axis.X + dx), (float)(gun_Axis.Y - dy));
         }
 
         public void shoot(int power)
         {
             this.power = power;
-            PointF pos = getRotatedPos(this.deg, this.cannon_Len, this.center);
+            PointF pos = getRotatedPos(this.deg, this.cannon_Len, this.gun_Axis);
             this.bullets.Add(new Bullet(pos, this.power, this.deg, this.map_Rect));
         }
     }
