@@ -8,6 +8,11 @@ using System.Net.Sockets;
 
 namespace Tank_Practice
 {
+    public static void Descripter()
+    {
+
+    }
+
     public class m_Server
     {
         public class AsyncObject
@@ -73,7 +78,7 @@ namespace Tank_Practice
                 sockClient = m_ServerSocket.EndAccept(ar);
                 connFrm.ConnectLoglistBox.Items.Add("Client Connected!!");
                 connFrm.connectReq = true;
-                connFrm.setconnFlag();
+                connFrm.setserverconnFlag();
             }
             catch (Exception ex)
             {
@@ -196,6 +201,7 @@ namespace Tank_Practice
                 ao.WorkingSocket = m_ClientSocket;
                 m_ClientSocket.BeginReceive(ao.Buffer, 0, ao.Buffer.Length, SocketFlags.None, m_ReceiveHandler, ao);
                 connFrm.ConnectLoglistBox.Items.Add("연결 성공");
+                connFrm.setclientconnFlag();
             }
             else
             {
@@ -208,7 +214,7 @@ namespace Tank_Practice
             m_ClientSocket.Close();
         }
 
-        private void SendMessage(string message)
+        public void SendMessage(string message)
         {
             AsyncObject ao = new AsyncObject(1);
             ao.Buffer = Encoding.Unicode.GetBytes(message);

@@ -235,6 +235,10 @@ namespace Tank_Practice
                     {
                         server.SendMessage("test");
                     }
+                    else if(client_connected)
+                    {
+                        client.SendMessage("test2");
+                    }
                     tank_Player.U = true;
                     break;
                 case Keys.Down:
