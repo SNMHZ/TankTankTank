@@ -219,26 +219,11 @@ namespace Tank_Practice
                         //bg.Graphics.FillRectangle(Brushes.Red, (float)x, (float)y, hit_Area_Size * 2, hit_Area_Size * 2);
                         tank_Player.bullets.RemoveAt(i);
                     }
-                    if (tank_Player2.bullets[i].hit)
-                    {
-                        x2 = tank_Player2.bullets[i].current_Pos.X - bullet_Size;
-                        y2 = tank_Player2.bullets[i].current_Pos.Y - bullet_Size;
-                        bg.Graphics.FillEllipse(Brushes.Black, (float)x2, (float)y2, bullet_Size * 2, bullet_Size * 2);
-                        x2 = tank_Player2.bullets[i].current_Pos.X - hit_Area_Size;
-                        y2 = tank_Player2.bullets[i].current_Pos.Y - hit_Area_Size;
-                        bg.Graphics.DrawImage(exPlo, (float)x2, (float)y2, hit_Area_Size * 2, hit_Area_Size * 2);
-                        //bg.Graphics.FillRectangle(Brushes.Red, (float)x, (float)y, hit_Area_Size * 2, hit_Area_Size * 2);
-                        tank_Player2.bullets.RemoveAt(i);
-                    }
                     else
                     {
                         x = tank_Player.bullets[i].current_Pos.X - bullet_Size;
                         y = tank_Player.bullets[i].current_Pos.Y - bullet_Size;
                         bg.Graphics.FillEllipse(Brushes.Black, (float)x, (float)y, bullet_Size * 2, bullet_Size * 2);
-
-                        x2 = tank_Player2.bullets[i].current_Pos.X - bullet_Size;
-                        y2 = tank_Player2.bullets[i].current_Pos.Y - bullet_Size;
-                        bg.Graphics.FillEllipse(Brushes.Black, (float)x2, (float)y2, bullet_Size * 2, bullet_Size * 2);
                     }
                 }
                 Font font = new Font("Ariel", 16);
@@ -409,6 +394,22 @@ namespace Tank_Practice
                     tank_Player.charge_Cannon = false;
 
                     power2 = gauge_Player2.Value;
+                    PointF temp = tank_Player.getRotatedPos(tank_Player.deg, tank_Player.cannon_Len, tank_Player.gun_Axis);
+                    if (server_connected)
+                    {
+
+                        server.SendMessage("b " + power.ToString() + " " +
+                        temp.X.ToString() + " " +
+                        temp.Y.ToString() +" "+
+                        tank_Player.deg.ToString());
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("b " + power.ToString() + " " +
+                        temp.X.ToString() + " " +
+                        temp.Y.ToString() + " " +
+                        tank_Player.deg.ToString());
+                    }
                     tank_Player2.shoot(power2);
                     tank_Player2.charge_Cannon = false;
                     break;
