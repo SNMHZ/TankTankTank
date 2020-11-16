@@ -110,6 +110,9 @@ namespace Tank_Practice
             hp_Player.Value = 2000;
             hp_Player.Visible = true;
             this.Controls.Add(hp_Player);
+            Size terrain_Size = new Size(120, 40);
+            terrain_Rect = new Rectangle(new Point(this.ClientRectangle.Width / 2 - terrain_Size.Width / 2, this.ClientRectangle.Height - (ground_Height + terrain_Size.Height)),
+                terrain_Size);
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -131,6 +134,7 @@ namespace Tank_Practice
                 bg.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 bg.Graphics.DrawImage(BG, 0, 0);
                 bg.Graphics.FillRectangle(Brushes.Black, ground_Rect);
+                bg.Graphics.FillRectangle(Brushes.Black, terrain_Rect);
                 Size resize = tank_Player.gun_Rect.Size;
                 Bitmap gun_Resized = new Bitmap(Properties.Resources.tank_gun_blue, resize);
                 Bitmap gun_Rotated = rotateImage(gun_Resized, (float)(tank_Player.deg - 90));
@@ -368,6 +372,13 @@ namespace Tank_Practice
                     tank_Obj.gun_Axis.X = tank_Obj.center.X + tank_Obj.body_Rect.Width / 8;
                     tank_Body_Pos.X += speed;
                     tank_Gun_Pos.X += speed;
+                    if (tank_Obj.gun_Axis.X + tank_Obj.gun_Rect.Width > terrain_Rect.Left)
+                    {
+                        tank_Obj.center.X = terrain_Rect.Left - tank_Obj.gun_Rect.Width;
+                        tank_Obj.gun_Axis.X = tank_Obj.center.X + tank_Obj.body_Rect.Width / 8;
+                        tank_Body_Pos.X = tank_Obj.center.X - tank_Obj.gun_Rect.Width;
+                        tank_Gun_Pos.X = tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width / 2;
+                    }
                     if (tank_Obj.center.X > tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width / 2)
                     {
                         tank_Obj.center.X = tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width / 2;

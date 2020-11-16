@@ -38,11 +38,13 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.네트워크ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(902, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1290, 35);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -52,13 +54,13 @@
             this.ConnectToolStripMenuItem,
             this.ResignToolStripMenuItem});
             this.네트워크ToolStripMenuItem.Name = "네트워크ToolStripMenuItem";
-            this.네트워크ToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.네트워크ToolStripMenuItem.Size = new System.Drawing.Size(100, 29);
             this.네트워크ToolStripMenuItem.Text = "네트워크";
             // 
             // ConnectToolStripMenuItem
             // 
             this.ConnectToolStripMenuItem.Name = "ConnectToolStripMenuItem";
-            this.ConnectToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.ConnectToolStripMenuItem.Size = new System.Drawing.Size(150, 34);
             this.ConnectToolStripMenuItem.Text = "연결";
             this.ConnectToolStripMenuItem.Click += new System.EventHandler(this.ConnectToolStripMenuItem_Click);
             // 
@@ -66,20 +68,20 @@
             // 
             this.ResignToolStripMenuItem.Enabled = false;
             this.ResignToolStripMenuItem.Name = "ResignToolStripMenuItem";
-            this.ResignToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.ResignToolStripMenuItem.Size = new System.Drawing.Size(150, 34);
             this.ResignToolStripMenuItem.Text = "항복";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(902, 521);
+            this.ClientSize = new System.Drawing.Size(1290, 782);
             this.Controls.Add(this.menuStrip1);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "TANKTANKTANK";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
