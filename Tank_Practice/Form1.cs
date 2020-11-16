@@ -231,12 +231,11 @@ namespace Tank_Practice
             switch (e.KeyCode)
             {
                 case Keys.Up:
-<<<<<<< HEAD
-                    tank_p1.U = true;
-
-=======
+                    if (server_connected)
+                    {
+                        server.SendMessage("test");
+                    }
                     tank_Player.U = true;
->>>>>>> refs/remotes/origin/master
                     break;
                 case Keys.Down:
                     tank_Player.D = true;

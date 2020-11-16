@@ -62,6 +62,11 @@ namespace Tank_Practice
             }
         }
 
+        public void setconnFlag()
+        {
+            parent.server_connected = true;
+        }
+
         private void ConnectorForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (serverOpen && !connectReq)

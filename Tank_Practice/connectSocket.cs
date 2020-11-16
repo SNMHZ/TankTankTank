@@ -73,6 +73,7 @@ namespace Tank_Practice
                 sockClient = m_ServerSocket.EndAccept(ar);
                 connFrm.ConnectLoglistBox.Items.Add("Client Connected!!");
                 connFrm.connectReq = true;
+                connFrm.setconnFlag();
             }
             catch (Exception ex)
             {
