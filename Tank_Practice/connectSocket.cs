@@ -76,7 +76,7 @@ namespace Tank_Practice
             }
             catch (Exception ex)
             {
-                //ChatListBox.Items.Add("연결 수락 도중 오류 발생 : " + ex.Message);
+                connFrm.ConnectLoglistBox.Items.Add("연결 수락 도중 오류 발생 : " + ex.Message);
                 return;
             }
             AsyncObject ao = new AsyncObject(4096);
@@ -88,7 +88,7 @@ namespace Tank_Practice
             }
             catch (Exception ex)
             {
-                //ChatListBox.Items.Add("수신 대기 도중 오류 발생 : " + ex.Message);
+                connFrm.ConnectLoglistBox.Items.Add("수신 대기 도중 오류 발생 : " + ex.Message);
                 return;
             }
         }
@@ -109,7 +109,7 @@ namespace Tank_Practice
             {
                 byte[] msgByte = new byte[recvBytes];
                 Array.Copy(ao.Buffer, msgByte, recvBytes);
-                //ChatListBox.Items.Add("메세지 받음 : " + Encoding.Unicode.GetString(msgByte));
+                connFrm.ConnectLoglistBox.Items.Add("메세지 받음 : " + Encoding.Unicode.GetString(msgByte));
             }
             try
             {
@@ -117,7 +117,7 @@ namespace Tank_Practice
             }
             catch (Exception ex)
             {
-                //ChatListBox.Items.Add("수신 도중 오류 발생 : " + ex.Message);
+                connFrm.ConnectLoglistBox.Items.Add("수신 도중 오류 발생 : " + ex.Message);
                 return;
             }
         }
@@ -132,14 +132,14 @@ namespace Tank_Practice
             }
             catch (Exception ex)
             {
-                //ChatListBox.Items.Add("전송 도중 오류 발생 : " + ex.Message);
+                connFrm.ConnectLoglistBox.Items.Add("전송 도중 오류 발생 : " + ex.Message);
                 return;
             }
             if (sentBytes > 0)
             {
                 byte[] msgByte = new byte[sentBytes];
                 Array.Copy(ao.Buffer, msgByte, sentBytes);
-                //ChatListBox.Items.Add("메세지 보냄 : " + Encoding.Unicode.GetString(msgByte));
+                connFrm.ConnectLoglistBox.Items.Add("메세지 보냄 : " + Encoding.Unicode.GetString(msgByte));
             }
         }
 
@@ -180,8 +180,6 @@ namespace Tank_Practice
             hostName = connFrm.textBox2.Text;
             m_ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
             bool isConnected = false;
-            // IPEndPoint ep = new IPEndPoint(IPAddress.Parse(hostName), hostPort);
-            // MessageBox.Show(ep.ToString());
             try
             {
                 m_ClientSocket.Connect(new IPEndPoint(IPAddress.Parse(hostName), hostPort));
