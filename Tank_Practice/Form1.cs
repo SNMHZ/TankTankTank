@@ -16,12 +16,14 @@ namespace Tank_Practice
     public partial class Form1 : Form
     {
         //탱크 관리용 변수
+
         ProgressBar gauge_Player, gauge_Player2;
         ProgressBar hp_Player, hp_Player2;
         bool bRunning, bRunning2;
-        Tank tank_Player, tank_Player2;
+        public Tank tank_Player, tank_Player2;
         Thread tank_Thread_Player, tank_Thread_Player2;
         Thread charge_Gauge_Thread_Player, charge_Gauge_Thread_Player2;
+
         Rectangle map_Rect;
         Point gauge_Player_Pos, gauge_Player_Pos2;
         Point hp_Player_Pos, hp_Player_Pos2;
@@ -35,6 +37,7 @@ namespace Tank_Practice
 
         //네트워크 커넥터 폼용 변수
         ConnectorForm ConnFrm;
+        public bool server_connected, client_connected;
 
         public Form1()
         {
@@ -51,6 +54,7 @@ namespace Tank_Practice
             tank_Thread_Player.Start();
             tank_Thread_Player2.Start();
             draw();
+            server_connected = client_connected = false;
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -128,6 +132,7 @@ namespace Tank_Practice
             hp_Player.Visible = true;
             this.Controls.Add(hp_Player);
 
+
             hp_Player2 = new ProgressBar();
             hp_Player2.Size = new Size(75, 15);
             hp_Player2.Style = ProgressBarStyle.Continuous;
@@ -138,6 +143,11 @@ namespace Tank_Practice
             hp_Player2.Value = 2000;
             hp_Player2.Visible = true;
             this.Controls.Add(hp_Player2);
+
+            Size terrain_Size = new Size(120, 40);
+            terrain_Rect = new Rectangle(new Point(this.ClientRectangle.Width / 2 - terrain_Size.Width / 2, this.ClientRectangle.Height - (ground_Height + terrain_Size.Height)),
+                terrain_Size);
+
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -159,6 +169,7 @@ namespace Tank_Practice
                 bg.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 bg.Graphics.DrawImage(BG, 0, 0);
                 bg.Graphics.FillRectangle(Brushes.Black, ground_Rect);
+                bg.Graphics.FillRectangle(Brushes.Black, terrain_Rect);
                 Size resize = tank_Player.gun_Rect.Size;
                 Bitmap gun_Resized = new Bitmap(Properties.Resources.tank_gun_blue, resize);
                 Bitmap gun_Rotated = rotateImage(gun_Resized, (float)(tank_Player.deg - 90));
@@ -284,18 +295,50 @@ namespace Tank_Practice
             switch (e.KeyCode)
             {
                 case Keys.Up:
+                    if (server_connected)
+                    {
+                        server.SendMessage("mut");
+                    }
+                    else if(client_connected)
+                    {
+                        client.SendMessage("mut");
+                    }
                     tank_Player.U = true;
                     tank_Player2.U = true;
                     break;
                 case Keys.Down:
+                    if (server_connected)
+                    {
+                        server.SendMessage("mdt");
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("mdt");
+                    }
                     tank_Player.D = true;
                     tank_Player2.D = true;
                     break;
                 case Keys.Left:
+                    if (server_connected)
+                    {
+                        server.SendMessage("mlt");
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("mlt");
+                    }
                     tank_Player.L = true;
                     tank_Player2.L = true;
                     break;
                 case Keys.Right:
+                    if (server_connected)
+                    {
+                        server.SendMessage("mrt");
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("mrt");
+                    }
                     tank_Player.R = true;
                     tank_Player2.R = true;
                     break;
@@ -316,18 +359,50 @@ namespace Tank_Practice
             switch (e.KeyCode)
             {
                 case Keys.Up:
+                    if (server_connected)
+                    {
+                        server.SendMessage("muf");
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("muf");
+                    }
                     tank_Player.U = false;
                     tank_Player2.U = false;
                     break;
                 case Keys.Down:
+                    if (server_connected)
+                    {
+                        server.SendMessage("mdf");
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("mdf");
+                    }
                     tank_Player.D = false;
                     tank_Player2.D = false;
                     break;
                 case Keys.Left:
+                    if (server_connected)
+                    {
+                        server.SendMessage("mlf");
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("mlf");
+                    }
                     tank_Player.L = false;
                     tank_Player2.L = false;
                     break;
                 case Keys.Right:
+                    if (server_connected)
+                    {
+                        server.SendMessage("mrf");
+                    }
+                    else if (client_connected)
+                    {
+                        client.SendMessage("mrf");
+                    }
                     tank_Player.R = false;
                     tank_Player2.R = false;
                     break;
@@ -373,6 +448,13 @@ namespace Tank_Practice
                     tank_Obj.gun_Axis.X = tank_Obj.center.X + tank_Obj.body_Rect.Width / 8;
                     tank_Body_Pos.X += speed;
                     tank_Gun_Pos.X += speed;
+                    if (tank_Obj.gun_Axis.X + tank_Obj.gun_Rect.Width > terrain_Rect.Left)
+                    {
+                        tank_Obj.center.X = terrain_Rect.Left - tank_Obj.gun_Rect.Width;
+                        tank_Obj.gun_Axis.X = tank_Obj.center.X + tank_Obj.body_Rect.Width / 8;
+                        tank_Body_Pos.X = tank_Obj.center.X - tank_Obj.gun_Rect.Width;
+                        tank_Gun_Pos.X = tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width / 2;
+                    }
                     if (tank_Obj.center.X > tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width / 2)
                     {
                         tank_Obj.center.X = tank_Obj.map_Rect.Width - tank_Obj.body_Rect.Width / 2;

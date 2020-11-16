@@ -8,6 +8,62 @@ using System.Net.Sockets;
 
 namespace Tank_Practice
 {
+    public class Descripter
+    {
+        Form1 form1;
+        public Descripter(Form1 _form1)
+        {
+            form1 = _form1;
+        }
+
+        public void descript(string msg)
+        {
+            //move msg
+            if (msg[0] == 'm')
+            {
+                //up
+                if (msg[1] == 'u')
+                {
+                    if (msg[2] == 't')
+                    {
+                        //form1.tank_Player.R = true;
+                    }
+                    else
+                    {
+
+                    }
+                }
+                //down
+                else if (msg[1] == 'd')
+                {
+
+                }
+                //right
+                else if (msg[1] == 'r')
+                {
+                    if (msg[2] == 't')
+                    {
+                        form1.tank_Player.R = true;
+                    }
+                    else
+                    {
+                        form1.tank_Player.R = false;
+                    }
+                }
+                //left
+                else if (msg[1] == 'l')
+                {
+
+                }
+
+            }
+            else
+            {
+
+            }
+        }
+    }
+
     public class m_Server
     {
         public class AsyncObject
@@ -26,6 +82,7 @@ namespace Tank_Practice
         private AsyncCallback m_AcceptHandler;
         private int port;
         public ConnectorForm connFrm;
+        Descripter descripter;
         public m_Server(ConnectorForm _connFrm)
         {
             m_ReceiveHandler = new AsyncCallback(handleReceivedData);
@@ -73,10 +130,12 @@ namespace Tank_Practice
                 sockClient = m_ServerSocket.EndAccept(ar);
                 connFrm.ConnectLoglistBox.Items.Add("Client Connected!!");
                 connFrm.connectReq = true;
+                connFrm.setserverconnFlag();
+                descripter = new Descripter(connFrm.parent);
             }
             catch (Exception ex)
             {
-                //ChatListBox.Items.Add("연결 수락 도중 오류 발생 : " + ex.Message);
+                connFrm.ConnectLoglistBox.Items.Add("연결 수락 도중 오류 발생 : " + ex.Message);
                 return;
             }
             AsyncObject ao = new AsyncObject(4096);
@@ -88,7 +147,7 @@ namespace Tank_Practice
             }
             catch (Exception ex)
             {
-                //ChatListBox.Items.Add("수신 대기 도중 오류 발생 : " + ex.Message);
+                connFrm.ConnectLoglistBox.Items.Add("수신 대기 도중 오류 발생 : " + ex.Message);
                 return;
             }
         }
@@ -109,7 +168,8 @@ namespace Tank_Practice
             {
                 byte[] msgByte = new byte[recvBytes];
                 Array.Copy(ao.Buffer, msgByte, recvBytes);
-                //ChatListBox.Items.Add("메세지 받음 : " + Encoding.Unicode.GetString(msgByte));
+                connFrm.ConnectLoglistBox.Items.Add("메세지 받음 : " + Encoding.Unicode.GetString(msgByte));
+                descripter.descript(Encoding.Unicode.GetString(msgByte));
             }
             try
             {
@@ -117,7 +177,7 @@ namespace Tank_Practice
             }
             catch (Exception ex)
             {
-                //ChatListBox.Items.Add("수신 도중 오류 발생 : " + ex.Message);
+                connFrm.ConnectLoglistBox.Items.Add("수신 도중 오류 발생 : " + ex.Message);
                 return;
             }
         }
@@ -132,14 +192,14 @@ namespace Tank_Practice
             }
             catch (Exception ex)
             {
-                //ChatListBox.Items.Add("전송 도중 오류 발생 : " + ex.Message);
+                connFrm.ConnectLoglistBox.Items.Add("전송 도중 오류 발생 : " + ex.Message);
                 return;
             }
             if (sentBytes > 0)
             {
                 byte[] msgByte = new byte[sentBytes];
                 Array.Copy(ao.Buffer, msgByte, sentBytes);
-                //ChatListBox.Items.Add("메세지 보냄 : " + Encoding.Unicode.GetString(msgByte));
+                connFrm.ConnectLoglistBox.Items.Add("메세지 보냄 : " + Encoding.Unicode.GetString(msgByte));
             }
         }
 
@@ -167,6 +227,7 @@ namespace Tank_Practice
         int hostPort;
         string hostName;
         public ConnectorForm connFrm;
+        Descripter descripter;
         public m_Client(ConnectorForm _connFrm)
         {
             m_ReceiveHandler = new AsyncCallback(handleReceivedData);
@@ -180,8 +241,6 @@ namespace Tank_Practice
             hostName = connFrm.textBox2.Text;
             m_ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
             bool isConnected = false;
-            // IPEndPoint ep = new IPEndPoint(IPAddress.Parse(hostName), hostPort);
-            // MessageBox.Show(ep.ToString());
             try
             {
                 m_ClientSocket.Connect(new IPEndPoint(IPAddress.Parse(hostName), hostPort));
@@ -197,6 +256,8 @@ namespace Tank_Practice
                 ao.WorkingSocket = m_ClientSocket;
                 m_ClientSocket.BeginReceive(ao.Buffer, 0, ao.Buffer.Length, SocketFlags.None, m_ReceiveHandler, ao);
                 connFrm.ConnectLoglistBox.Items.Add("연결 성공");
+                connFrm.setclientconnFlag();
+                descripter = new Descripter(connFrm.parent);
             }
             else
             {
@@ -209,7 +270,7 @@ namespace Tank_Practice
             m_ClientSocket.Close();
         }
 
-        private void SendMessage(string message)
+        public void SendMessage(string message)
         {
             AsyncObject ao = new AsyncObject(1);
             ao.Buffer = Encoding.Unicode.GetBytes(message);

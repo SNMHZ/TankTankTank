@@ -58,8 +58,18 @@ namespace Tank_Practice
             }
             catch(Exception ex)
             {
-                MessageBox.Show("Connection Failed! check your Address.");
+                ConnectLoglistBox.Items.Add("Connection Failed! check your Address.");
             }
+        }
+
+        public void setserverconnFlag()
+        {
+            parent.server_connected = true;
+        }
+
+        public void setclientconnFlag()
+        {
+            parent.client_connected = true;
         }
 
         private void ConnectorForm_FormClosed(object sender, FormClosedEventArgs e)
