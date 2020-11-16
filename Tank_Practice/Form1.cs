@@ -16,21 +16,23 @@ namespace Tank_Practice
     public partial class Form1 : Form
     {
         //탱크 관리용 변수
-        ProgressBar gauge_Player;
-        ProgressBar hp_Player;
-        bool bRunning;
-        public Tank tank_Player;
-        Thread tank_Thread_Player;
-        Thread charge_Gauge_Thread_Player;
+
+        ProgressBar gauge_Player, gauge_Player2;
+        ProgressBar hp_Player, hp_Player2;
+        bool bRunning, bRunning2;
+        public Tank tank_Player, tank_Player2;
+        Thread tank_Thread_Player, tank_Thread_Player2;
+        Thread charge_Gauge_Thread_Player, charge_Gauge_Thread_Player2;
+
         Rectangle map_Rect;
-        Point gauge_Player_Pos;
-        Point hp_Player_Pos;
-        int power;
+        Point gauge_Player_Pos, gauge_Player_Pos2;
+        Point hp_Player_Pos, hp_Player_Pos2;
+        int power, power2;
+        int player = 1, player2 = 2;
 
         // 지형 정보 변수
         Rectangle terrain_Rect;
         Rectangle ground_Rect;
-        Image myImage;
         Image BG, exPlo;
 
         //네트워크 커넥터 폼용 변수
@@ -45,9 +47,12 @@ namespace Tank_Practice
             exPlo = Properties.Resources.explosion;
             resetGame();
             bRunning = true;
+            bRunning2 = true;
             tank_Thread_Player = new Thread(() => operateTank(tank_Player, hp_Player, hp_Player_Pos));
+            tank_Thread_Player2 = new Thread(() => operateTank(tank_Player2, hp_Player2, hp_Player_Pos2));
             // tank_Thread_Player.IsBackground = true;
             tank_Thread_Player.Start();
+            tank_Thread_Player2.Start();
             draw();
             server_connected = client_connected = false;
         }
@@ -76,10 +81,16 @@ namespace Tank_Practice
             ground_Rect = new Rectangle(new Point(0, map_Rect.Height - ground_Height),
                 new Size(map_Rect.Width, ground_Height));
             int x = body.Width / 2;
+            int x2 = map_Rect.Width - body.Width / 2;
             int y = map_Rect.Height - (ground_Height + body.Height * 3 / 4);
+            int y2 = map_Rect.Height - (ground_Height + body.Height * 3 / 4);
             tank_Player = new Tank(new Point(x, y), new Point(x + body.Width / 8, y), new Rectangle(new Point(x - body.Width / 2, y - body.Height / 4), body),
                 new Rectangle(new Point(x, y - gun.Height / 2), gun),
                 new Rectangle(new Point(0, 0), new Size(map_Rect.Width, map_Rect.Height - ground_Height)));
+            tank_Player2 = new Tank(new Point(x2, y2), new Point(x2 - body.Width / 8, y2), new Rectangle(new Point(x2 - body.Width / 2, y2 - body.Height / 4), body),
+                new Rectangle(new Point(x2, y2 - gun.Height / 2), gun),
+                new Rectangle(new Point(0, 0), new Size(map_Rect.Width, map_Rect.Height - ground_Height)));
+            // tank_Player2.deg = 135;
             /*
             Size body = new Size(100, 20);
             Size turret = new Size(40, 20);
@@ -100,6 +111,16 @@ namespace Tank_Practice
             gauge_Player.Location = gauge_Player_Pos;
             gauge_Player.Visible = true;
             this.Controls.Add(gauge_Player);
+
+            gauge_Player2 = new ProgressBar();
+            gauge_Player2.Step = 1;
+            gauge_Player2.Size = new Size(300, 20);
+            gauge_Player2.Style = ProgressBarStyle.Continuous;
+            gauge_Player_Pos2 = new Point(50, this.ClientRectangle.Height - 80);
+            gauge_Player2.Location = gauge_Player_Pos2;
+            gauge_Player2.Visible = true;
+            this.Controls.Add(gauge_Player2);
+
             hp_Player = new ProgressBar();
             hp_Player.Size = new Size(75, 15);
             hp_Player.Style = ProgressBarStyle.Continuous;
@@ -110,9 +131,23 @@ namespace Tank_Practice
             hp_Player.Value = 2000;
             hp_Player.Visible = true;
             this.Controls.Add(hp_Player);
+
+
+            hp_Player2 = new ProgressBar();
+            hp_Player2.Size = new Size(75, 15);
+            hp_Player2.Style = ProgressBarStyle.Continuous;
+            hp_Player_Pos2 = new Point(x2 - body.Width / 2, y2 - (tank_Player2.cannon_Len + hp_Player2.Height));
+            hp_Player2.Location = hp_Player_Pos2;
+            hp_Player2.ForeColor = Color.Blue;
+            hp_Player2.Maximum = 2000;
+            hp_Player2.Value = 2000;
+            hp_Player2.Visible = true;
+            this.Controls.Add(hp_Player2);
+
             Size terrain_Size = new Size(120, 40);
             terrain_Rect = new Rectangle(new Point(this.ClientRectangle.Width / 2 - terrain_Size.Width / 2, this.ClientRectangle.Height - (ground_Height + terrain_Size.Height)),
                 terrain_Size);
+
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -143,6 +178,16 @@ namespace Tank_Practice
                     tank_Player.body_Rect.Top, tank_Player.body_Rect.Width, tank_Player.body_Rect.Height);
                 Point cannon_Start = tank_Player.gun_Axis;
                 PointF cannon_End = tank_Player.getRotatedPos(tank_Player.deg, tank_Player.cannon_Len, cannon_Start);
+
+                Size resize2 = tank_Player2.gun_Rect.Size;
+                Bitmap gun_Resized2 = new Bitmap(Properties.Resources.tank_gun_red, resize2);
+                Bitmap gun_Rotated2 = rotateImage(gun_Resized2, (float)(tank_Player2.deg));
+                bg.Graphics.DrawImage(gun_Rotated2, tank_Player2.gun_Axis.X - gun_Rotated2.Width, tank_Player2.gun_Axis.Y - (gun_Rotated2.Height - tank_Player2.gun_Rect.Height / 2));
+                bg.Graphics.DrawImage(Properties.Resources.tank_body_red, tank_Player2.body_Rect.Left,
+                    tank_Player2.body_Rect.Top, tank_Player2.body_Rect.Width, tank_Player2.body_Rect.Height);
+                Point cannon_Start2 = tank_Player2.gun_Axis;
+                PointF cannon_End2 = tank_Player2.getRotatedPos(tank_Player2.deg, tank_Player2.cannon_Len, cannon_Start);
+
                 /*
                 PointF gun_Center = new PointF(tank_Player.gun_Rect.Width / 2, tank_Player.gun_Rect.Height / 2);
                 Bitmap gun = rotateImage(Properties.Resources.tank_gun_blue, gun_Center, (float)(tank_Player.deg - 90));
@@ -159,7 +204,7 @@ namespace Tank_Practice
                 */
                 int bullet_Size = 5;
                 int hit_Area_Size = 10;
-                double x, y;
+                double x, y, x2, y2;
                 for (int i = tank_Player.bullets.Count - 1; i >= 0; --i)
                 {
                     if (tank_Player.bullets[i].hit)
@@ -173,11 +218,26 @@ namespace Tank_Practice
                         //bg.Graphics.FillRectangle(Brushes.Red, (float)x, (float)y, hit_Area_Size * 2, hit_Area_Size * 2);
                         tank_Player.bullets.RemoveAt(i);
                     }
+                    if (tank_Player2.bullets[i].hit)
+                    {
+                        x2 = tank_Player2.bullets[i].current_Pos.X - bullet_Size;
+                        y2 = tank_Player2.bullets[i].current_Pos.Y - bullet_Size;
+                        bg.Graphics.FillEllipse(Brushes.Black, (float)x2, (float)y2, bullet_Size * 2, bullet_Size * 2);
+                        x2 = tank_Player2.bullets[i].current_Pos.X - hit_Area_Size;
+                        y2 = tank_Player2.bullets[i].current_Pos.Y - hit_Area_Size;
+                        bg.Graphics.DrawImage(exPlo, (float)x2, (float)y2, hit_Area_Size * 2, hit_Area_Size * 2);
+                        //bg.Graphics.FillRectangle(Brushes.Red, (float)x, (float)y, hit_Area_Size * 2, hit_Area_Size * 2);
+                        tank_Player2.bullets.RemoveAt(i);
+                    }
                     else
                     {
                         x = tank_Player.bullets[i].current_Pos.X - bullet_Size;
                         y = tank_Player.bullets[i].current_Pos.Y - bullet_Size;
                         bg.Graphics.FillEllipse(Brushes.Black, (float)x, (float)y, bullet_Size * 2, bullet_Size * 2);
+
+                        x2 = tank_Player2.bullets[i].current_Pos.X - bullet_Size;
+                        y2 = tank_Player2.bullets[i].current_Pos.Y - bullet_Size;
+                        bg.Graphics.FillEllipse(Brushes.Black, (float)x2, (float)y2, bullet_Size * 2, bullet_Size * 2);
                     }
                 }
                 Font font = new Font("Ariel", 16);
@@ -244,6 +304,7 @@ namespace Tank_Practice
                         client.SendMessage("mut");
                     }
                     tank_Player.U = true;
+                    tank_Player2.U = true;
                     break;
                 case Keys.Down:
                     if (server_connected)
@@ -255,6 +316,7 @@ namespace Tank_Practice
                         client.SendMessage("mdt");
                     }
                     tank_Player.D = true;
+                    tank_Player2.D = true;
                     break;
                 case Keys.Left:
                     if (server_connected)
@@ -266,6 +328,7 @@ namespace Tank_Practice
                         client.SendMessage("mlt");
                     }
                     tank_Player.L = true;
+                    tank_Player2.L = true;
                     break;
                 case Keys.Right:
                     if (server_connected)
@@ -277,11 +340,16 @@ namespace Tank_Practice
                         client.SendMessage("mrt");
                     }
                     tank_Player.R = true;
+                    tank_Player2.R = true;
                     break;
                 case Keys.Space:
                     tank_Player.charge_Cannon = true;
                     charge_Gauge_Thread_Player = new Thread(() => chargeGauge(tank_Player, gauge_Player));
                     charge_Gauge_Thread_Player.Start();
+
+                    tank_Player2.charge_Cannon = true;
+                    charge_Gauge_Thread_Player2 = new Thread(() => chargeGauge(tank_Player2, gauge_Player2));
+                    charge_Gauge_Thread_Player2.Start();
                     break;
             }
         }
@@ -300,6 +368,7 @@ namespace Tank_Practice
                         client.SendMessage("muf");
                     }
                     tank_Player.U = false;
+                    tank_Player2.U = false;
                     break;
                 case Keys.Down:
                     if (server_connected)
@@ -311,6 +380,7 @@ namespace Tank_Practice
                         client.SendMessage("mdf");
                     }
                     tank_Player.D = false;
+                    tank_Player2.D = false;
                     break;
                 case Keys.Left:
                     if (server_connected)
@@ -322,6 +392,7 @@ namespace Tank_Practice
                         client.SendMessage("mlf");
                     }
                     tank_Player.L = false;
+                    tank_Player2.L = false;
                     break;
                 case Keys.Right:
                     if (server_connected)
@@ -333,11 +404,16 @@ namespace Tank_Practice
                         client.SendMessage("mrf");
                     }
                     tank_Player.R = false;
+                    tank_Player2.R = false;
                     break;
                 case Keys.Space:
                     power = gauge_Player.Value;
                     tank_Player.shoot(power);
                     tank_Player.charge_Cannon = false;
+
+                    power2 = gauge_Player2.Value;
+                    tank_Player2.shoot(power2);
+                    tank_Player2.charge_Cannon = false;
                     break;
             }
         }
